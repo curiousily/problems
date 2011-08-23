@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1314071432 source:/home/vini/Dev/c/workspace/problems/usaco/chapter-2/section-2.1/the castle/main.cpp
+	<iostream>
+	<cstdio>
+	<cstdlib>
+	<cmath>
+	<cstring>
+	<vector>
+	<string>
+	<algorithm>
+	<set>
+	<queue>
+
