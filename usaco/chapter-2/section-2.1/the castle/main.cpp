@@ -53,6 +53,23 @@ bool CanGoDown(int nPos, int mPos) {
     return CanGoTo(nPos + 1, mPos);
 }
 
+struct Cell {
+    int n, m;
+};
+
+void BFS(int nPos, int mPos) {
+    Cell c;
+    c.n = nPos;
+    c.m = mPos;
+    queue<Cell> cellQueue;
+    cellQueue.push(c);
+    visited[nPos][mPos] = true;
+    while(!cellQueue.empty()) {
+        Cell currentCell = cellQueue.front();
+        cellQueue.pop();
+    }
+}
+
 void FindRoom(int nPos, int mPos) {
     roomSize++;
     visited[nPos][mPos] = true;
