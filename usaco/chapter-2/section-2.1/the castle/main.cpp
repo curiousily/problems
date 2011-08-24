@@ -67,6 +67,15 @@ void BFS(int nPos, int mPos) {
     while(!cellQueue.empty()) {
         Cell currentCell = cellQueue.front();
         cellQueue.pop();
+        if(CanGoLeft(currentCell.n, currentCell.m)) {
+            Cell leftCell;
+            leftCell.n = currentCell.n;
+            leftCell.m = currentCell.m - 1;
+        } else if(CanGoRight(currentCell.n, currentCell.m)) {
+            Cell rightCell;
+            rightCell.n = currentCell.n;
+            rightCell.m = currentCell.m + 1;
+        }
     }
 }
 
