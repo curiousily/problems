@@ -39,7 +39,7 @@ void InitMap() {
 }
 
 bool IsInnerWall(int nPos, int mPos) {
-    return nPos != 1 && nPos != n && mPos != 1 && mPos != m;
+    return nPos > 1 && nPos < n && mPos > 1 && mPos < m;
 }
 
 bool IsInBoundaries(int nPos, int mPos) {
@@ -78,14 +78,6 @@ bool CanGoLeft(int nPos, int mPos) {
 
 bool CanGoRight(int nPos, int mPos) {
     return IsInBoundaries(nPos, mPos + 1) && !HasRightWall(map[nPos][mPos]);
-//    bool rightWall = HasRightWall(map[nPos][mPos]);
-//    if(!rightWall) {
-//        if(IsInBoundaries(nPos, mPos + 1))
-//            printf("In bounds\n");
-//        else
-//            printf("Not in bounds n=%d m=%d\n", nPos, mPos + 1);
-//    }
-//    return !HasRightWall(map[nPos][mPos]);
 }
 
 bool CanGoUp(int nPos, int mPos) {
@@ -132,19 +124,6 @@ void BFS(int nPos, int mPos) {
         }
         roomSize++;
         visited[currentCell.n][currentCell.m] = true;
-//        if(currentCell.n == 4 && currentCell.m == 4) {
-//            if(!HasRightWall(map[currentCell.n][currentCell.m])) {
-//                printf("Can't go from n=%d m=%d\n", currentCell.n, currentCell.m);
-//            }
-//            if(!IsInBoundaries(currentCell.n, currentCell.m + 1)) {
-//                printf("Can't go from n=%d m=%d\n", currentCell.n, currentCell.m);
-//            }
-//            if(!CanGoRight(currentCell.n, currentCell.m + 1)) {
-//                printf("Can't go from n=%d m=%d\n", currentCell.n, currentCell.m);
-//            }
-//            printf("map %d \n", map[currentCell.n][currentCell.m]);
-
-//        }
 //        printf("going at n=%d and m=%d\n", currentCell.n, currentCell.m);
         if(CanGoLeft(currentCell.n, currentCell.m)) {
 //            printf("Going left\n");
