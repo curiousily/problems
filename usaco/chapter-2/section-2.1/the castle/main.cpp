@@ -38,6 +38,10 @@ void InitMap() {
     }
 }
 
+bool IsInnerWall(int nPos, int mPos) {
+    return nPos != 1 && nPos != n && mPos != 1 && mPos != m;
+}
+
 bool IsInBoundaries(int nPos, int mPos) {
     return nPos > 0 && nPos <= n && mPos > 0 && mPos <= m;
 }
@@ -97,12 +101,20 @@ struct Cell {
 };
 
 struct Wall {
-    Cell left, right;
+    Cell c1, c2;
+    bool isVertical;
 };
+
+struct Room {
+    set<Wall> walls;
+};
+
+vector<Room> rooms;
 
 void BFS(int nPos, int mPos) {
 
     if(visited[nPos][mPos]) return;
+    Room r;
     Cell c;
     c.n = nPos;
     c.m = mPos;
@@ -143,6 +155,15 @@ void BFS(int nPos, int mPos) {
 //            if(cell.n == 1 && cell.m == 3) {
 //                printf("Adding from n=%d m=%d\n", currentCell.n, currentCell.m);
 //            }
+        } else if(HasLeftWall(map[currentCell.n][currentCell.m]) && IsInnerWall(currentCell.n, currentCell.m - 1)) {
+            Wall w;
+            w.isVertical = true;
+            Cell leftCell;
+            leftCell.n = currentCell.n;
+            leftCell.m = currentCell.m - 1;
+            w.c1 = leftCell;
+            w.c2 = currentCell;
+            r.walls.insert(w);
         }
         if(CanGoRight(currentCell.n, currentCell.m)) {
 //            printf("Going right\n");
@@ -153,6 +174,15 @@ void BFS(int nPos, int mPos) {
 //            if(cell.n == 1 && cell.m == 3) {
 //                printf("Adding from n=%d m=%d\n", currentCell.n, currentCell.m);
 //            }
+        } else if(HasRightWall(map[currentCell.n][currentCell.m]) && IsInnerWall(currentCell.n, currentCell.m + 1)) {
+            Wall w;
+            w.isVertical = true;
+            w.c1 = currentCell;
+            Cell rightCell;
+            rightCell.n = currentCell.n;
+            rightCell.m = currentCell.m + 1;
+            w.c2 = rightCell;
+            r.walls.insert(w);
         }
         if(CanGoUp(currentCell.n, currentCell.m)) {
 //            printf("Going up\n");
@@ -163,6 +193,15 @@ void BFS(int nPos, int mPos) {
 //            if(cell.n == 1 && cell.m == 3) {
 //                printf("Adding from n=%d m=%d\n", currentCell.n, currentCell.m);
 //            }
+        } else if(HasUpWall(map[currentCell.n][currentCell.m]) && IsInnerWall(currentCell.n - 1, currentCell.m)) {
+            Wall w;
+            w.isVertical = false;
+            Cell upCell;
+            upCell.n = currentCell.n - 1;
+            upCell.m = currentCell.m;
+            w.c1 = upCell;
+            w.c2 = currentCell;
+            r.walls.insert(w);
         }
         if(CanGoDown(currentCell.n, currentCell.m)) {
 //            printf("Going down\n");
@@ -173,8 +212,20 @@ void BFS(int nPos, int mPos) {
 //            if(cell.n == 1 && cell.m == 3) {
 //                printf("Adding from n=%d m=%d\n", currentCell.n, currentCell.m);
 //            }
+        } else if(HasDownWall(map[currentCell.n][currentCell.m]) && IsInnerWall(currentCell.n + 1, currentCell.m)) {
+
+            Wall w;
+            w.c1 = currentCell;
+            w.isVertical = false;
+            Cell downCell;
+            downCell.n = currentCell.n + 1;
+            downCell.m = currentCell.m;
+            w.c2 = downCell;
+            r.walls.insert(w);
         }
     }
+    r.size = roomSize;
+    rooms.push_back(r);
     roomCount++;
     if(roomSize > largestRoomSize)
         largestRoomSize = roomSize;
