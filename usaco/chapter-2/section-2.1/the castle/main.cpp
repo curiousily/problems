@@ -17,6 +17,11 @@ LANG: C++
 
 using namespace std;
 
+const int LEFT_WALL = 1;
+const int UP_WALL = 2;
+const int RIGHT_WALL = 4;
+const int DOWN_WALL = 8;
+
 unsigned m, n;
 vector<vector<int> > map;
 vector<vector<bool> > visited;
@@ -33,24 +38,50 @@ void InitMap() {
     }
 }
 
-bool CanGoTo(int nPos, int mPos) {
-    return !visited[nPos][mPos] && nPos > 0 && nPos <= n && mPos > 0 && mPos <= m;
+bool IsInBoundaries(int nPos, int mPos) {
+    return nPos > 0 && nPos <= n && mPos > 0 && mPos <= m && !visited[nPos][mPos];
+}
+
+bool HasLeftWall(int value) {
+    return value % 2 == 1;
+}
+
+bool HasDownWall(int value) {
+    return value >= 8;
+}
+
+bool HasUpWall(int value) {
+    int realValue = value;
+    if(realValue > 8)
+        realValue -= 8;
+    if(realValue < 2) return false;
+    return true;
+}
+
+bool HasRightWall(int value) {
+    int realValue = value;
+    if(realValue > 8)
+        realValue -= 8;
+    if(realValue == 0) return true;
+    if(realValue < 4) return false;
+    return true;
 }
 
 bool CanGoLeft(int nPos, int mPos) {
-    return CanGoTo(nPos, mPos - 1);
+    return IsInBoundaries(nPos, mPos - 1) && !HasLeftWall(map[nPos][mPos]);
 }
 
 bool CanGoRight(int nPos, int mPos) {
-    return CanGoTo(nPos, mPos + 1);
+    //return IsInBoundaries(nPos, mPos + 1) && !HasRightWall(map[nPos][mPos]);
+    return !HasRightWall(map[nPos][mPos]);
 }
 
 bool CanGoUp(int nPos, int mPos) {
-    return CanGoTo(nPos - 1, mPos);
+    return IsInBoundaries(nPos - 1, mPos) && !HasUpWall(map[nPos][mPos]);
 }
 
 bool CanGoDown(int nPos, int mPos) {
-    return CanGoTo(nPos + 1, mPos);
+    return IsInBoundaries(nPos + 1, mPos) && !HasDownWall(map[nPos][mPos]);
 }
 
 struct Cell {
@@ -58,50 +89,85 @@ struct Cell {
 };
 
 void BFS(int nPos, int mPos) {
+
+    if(visited[nPos][mPos]) return;
     Cell c;
     c.n = nPos;
     c.m = mPos;
+    printf("Entering bfs with n=%d and m=%d\n", nPos, mPos);
     queue<Cell> cellQueue;
     cellQueue.push(c);
     visited[nPos][mPos] = true;
+    int roomSize = 0;
     while(!cellQueue.empty()) {
         Cell currentCell = cellQueue.front();
         cellQueue.pop();
+        roomSize++;
+        visited[currentCell.n][currentCell.m] = true;
+        if(currentCell.n == 4 && currentCell.m == 4) {
+            if(!HasRightWall(map[currentCell.n][currentCell.m])) {
+                printf("Can't go from n=%d m=%d\n", currentCell.n, currentCell.m);
+            }
+            if(!IsInBoundaries(currentCell.n, currentCell.m + 1)) {
+                printf("Can't go from n=%d m=%d\n", currentCell.n, currentCell.m);
+            }
+            if(!CanGoRight(currentCell.n, currentCell.m + 1)) {
+                printf("Can't go from n=%d m=%d\n", currentCell.n, currentCell.m);
+            }
+//            printf("map %d \n", map[currentCell.n][currentCell.m]);
+
+        }
+        printf("going at n=%d and m=%d\n", currentCell.n, currentCell.m);
         if(CanGoLeft(currentCell.n, currentCell.m)) {
-            Cell leftCell;
-            leftCell.n = currentCell.n;
-            leftCell.m = currentCell.m - 1;
-        } else if(CanGoRight(currentCell.n, currentCell.m)) {
-            Cell rightCell;
-            rightCell.n = currentCell.n;
-            rightCell.m = currentCell.m + 1;
+            printf("Going left\n");
+            Cell cell;
+            cell.n = currentCell.n;
+            cell.m = currentCell.m - 1;
+            cellQueue.push(cell);
+//            if(cell.n == 1 && cell.m == 3) {
+//                printf("Adding from n=%d m=%d\n", currentCell.n, currentCell.m);
+//            }
+        }
+        if(CanGoRight(currentCell.n, currentCell.m)) {
+            printf("Going right\n");
+            Cell cell;
+            cell.n = currentCell.n;
+            cell.m = currentCell.m + 1;
+            cellQueue.push(cell);
+//            if(cell.n == 1 && cell.m == 3) {
+//                printf("Adding from n=%d m=%d\n", currentCell.n, currentCell.m);
+//            }
+        }
+        if(CanGoUp(currentCell.n, currentCell.m)) {
+            printf("Going up\n");
+            Cell cell;
+            cell.n = currentCell.n - 1;
+            cell.m = currentCell.m;
+            cellQueue.push(cell);
+//            if(cell.n == 1 && cell.m == 3) {
+//                printf("Adding from n=%d m=%d\n", currentCell.n, currentCell.m);
+//            }
+        }
+        if(CanGoDown(currentCell.n, currentCell.m)) {
+            printf("Going down\n");
+            Cell cell;
+            cell.n = currentCell.n + 1;
+            cell.m = currentCell.m;
+            cellQueue.push(cell);
+//            if(cell.n == 1 && cell.m == 3) {
+//                printf("Adding from n=%d m=%d\n", currentCell.n, currentCell.m);
+//            }
         }
     }
-}
-
-void FindRoom(int nPos, int mPos) {
-    roomSize++;
-    visited[nPos][mPos] = true;
-    if(CanGoLeft(nPos, mPos)) {
-        FindRoom(nPos, mPos - 1);
-    } else if(CanGoRight(nPos, mPos)) {
-        FindRoom(nPos, mPos + 1);
-    } else if(CanGoUp(nPos, mPos)) {
-        FindRoom(nPos - 1, mPos);
-    } else if(CanGoDown(nPos, mPos)) {
-        FindRoom(nPos + 1, mPos);
-    } else {
-        if(roomSize > largestRoomSize)
-            largestRoomSize = roomSize;
-        roomCount++;
-    }
+    printf("Romm size is %d\n", roomSize);
 }
 
 int main()
 {
     freopen("castle.in", "r", stdin);
-    freopen("castle.out", "w", stdout);
+//    freopen("castle.out", "w", stdout);
     scanf("%d %d", &m, &n);
+    printf("n=%d and m=%d\n", n, m);
     InitMap();
     int num;
     for(unsigned i = 1; i <= n; i++)
@@ -112,9 +178,11 @@ int main()
         }
     for(unsigned i = 1; i <= n; i++) {
         for(unsigned k = 1 ; k <= m; k++) {
-            printf("%d ", map[i][k]);
+            BFS(3, 4);
+            return 0;
+//            printf("%d ", map[i][k]);
         }
-        printf("\n");
+//        printf("\n");
     }
 //    printf("m=%d and n=%d", m, n);
     return 0;
