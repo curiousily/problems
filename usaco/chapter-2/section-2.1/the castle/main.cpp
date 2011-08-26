@@ -39,7 +39,7 @@ void InitMap() {
 }
 
 bool IsInnerWall(int nPos, int mPos) {
-    return nPos > 1 && nPos < n && mPos > 1 && mPos < m;
+    return nPos > 0 && nPos <= n && mPos > 0 && mPos <= m;
 }
 
 bool IsInBoundaries(int nPos, int mPos) {
@@ -58,7 +58,7 @@ bool HasUpWall(int value) {
     int realValue = value;
     if(realValue > 8)
         realValue -= 8;
-    if(realValue == 4) return false;
+    if(realValue == 4 || realValue == 5) return false;
     if(realValue < 2) return false;
     return true;
 }
@@ -95,10 +95,20 @@ struct Cell {
 struct Wall {
     Cell c1, c2;
     bool isVertical;
+
+    bool operator <(Wall const& w) const {
+        return true;
+    }
+
+    bool operator==(const Wall& w) const {
+      return c1.n == w.c1.n && c1.m == w.c1.m && c2.n == w.c2.n && c2.m == w.c2.m;
+    }
+
 };
 
 struct Room {
     set<Wall> walls;
+    int size;
 };
 
 vector<Room> rooms;
@@ -117,6 +127,8 @@ void BFS(int nPos, int mPos) {
     int roomSize = 0;
     while(!cellQueue.empty()) {
 
+
+
         Cell currentCell = cellQueue.front();
         cellQueue.pop();
         if(visited[currentCell.n][currentCell.m]) {
@@ -124,6 +136,19 @@ void BFS(int nPos, int mPos) {
         }
         roomSize++;
         visited[currentCell.n][currentCell.m] = true;
+
+//if(!IsInnerWall(currentCell.n, currentCell.m + 1)) {
+//                    printf("wtf?\n");
+//                }
+
+
+//        if(HasDownWall(map[currentCell.n][currentCell.m]) && IsInnerWall(currentCell.n + 1, currentCell.m)) {
+//            printf("Has down inner wall\n");
+//            printf("down is n=%d m=%d", currentCell.n + 1, currentCell.m);
+//
+//        }
+//        return;
+
 //        printf("going at n=%d and m=%d\n", currentCell.n, currentCell.m);
         if(CanGoLeft(currentCell.n, currentCell.m)) {
 //            printf("Going left\n");
@@ -162,6 +187,10 @@ void BFS(int nPos, int mPos) {
             rightCell.m = currentCell.m + 1;
             w.c2 = rightCell;
             r.walls.insert(w);
+
+
+
+
         }
         if(CanGoUp(currentCell.n, currentCell.m)) {
 //            printf("Going up\n");
@@ -181,6 +210,15 @@ void BFS(int nPos, int mPos) {
             w.c1 = upCell;
             w.c2 = currentCell;
             r.walls.insert(w);
+
+
+//            if(currentCell.n == 4 && currentCell.m == 1) {
+//
+//                if(HasUpWall(map[currentCell.n][currentCell.m])) {
+//                    printf("wtf?\n");
+//                }
+//            }
+
         }
         if(CanGoDown(currentCell.n, currentCell.m)) {
 //            printf("Going down\n");
@@ -192,7 +230,9 @@ void BFS(int nPos, int mPos) {
 //                printf("Adding from n=%d m=%d\n", currentCell.n, currentCell.m);
 //            }
         } else if(HasDownWall(map[currentCell.n][currentCell.m]) && IsInnerWall(currentCell.n + 1, currentCell.m)) {
-
+            if(currentCell.n == 3 && currentCell.m == 1) {
+                printf("wtf?\n");
+            }
             Wall w;
             w.c1 = currentCell;
             w.isVertical = false;
@@ -203,6 +243,19 @@ void BFS(int nPos, int mPos) {
             r.walls.insert(w);
         }
     }
+
+    printf("wall count %d \n", r.walls.size());
+    set<Wall>::iterator it;
+
+    for ( it=r.walls.begin() ; it != r.walls.end(); it++ ) {
+        Wall w = *it;
+        if(w.isVertical)
+            printf("left n=%d m=%d right n=%d m=%d\n", w.c1.n, w.c1.m, w.c2.n, w.c2.m);
+        else
+            printf("top n=%d m=%d down n=%d m=%d\n", w.c1.n, w.c1.m, w.c2.n, w.c2.m);
+    }
+
+
     r.size = roomSize;
     rooms.push_back(r);
     roomCount++;
@@ -228,6 +281,7 @@ int main()
     for(unsigned i = 1; i <= n; i++) {
         for(unsigned k = 1 ; k <= m; k++) {
             BFS(i, k);
+//            BFS(1, 1);
 //            return 0;
 //            printf("%d ", map[i][k]);
         }
