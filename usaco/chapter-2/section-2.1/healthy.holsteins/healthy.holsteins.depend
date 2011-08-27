@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1314436325 source:/home/vini/Dev/cpp/workspace/problems/usaco/chapter-2/section-2.1/healthy.holsteins/main.cpp
+	<iostream>
+	<cstdio>
+	<cstdlib>
+	<cmath>
+	<cstring>
+	<vector>
+	<string>
+	<algorithm>
+	<set>
+	<queue>
+
