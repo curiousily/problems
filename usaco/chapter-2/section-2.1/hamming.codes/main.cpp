@@ -62,6 +62,17 @@ void Generate() {
 //    }
 }
 
+unsigned Distance(unsigned a, unsigned b) {
+    unsigned dist = 0, val = a ^ b;
+    while(val)
+    {
+        ++dist;
+        val &= val - 1;
+    }
+
+    return dist;
+}
+
 int main()
 {
 
@@ -82,10 +93,21 @@ int main()
     unsigned char b = 51;
     unsigned char c;
 
-    c = a ^ b;
-//    cout << "before" << endl;
-    cout << (int) c << endl;
-//    cout << "after" << endl;
+    PrintInBinary(7);
+    for(unsigned i = 8; i < 31 ;i++) {
+        a = i;
+        for(unsigned j = 8; j < 31; j++) {
+            b = j;
+            c = a ^ b;
+            if(((int) c) == 7) {
+                PrintInBinary(a);
+                PrintInBinary(b);
+                printf("a=%d b=%d c=%d\n", a, b, (int) c);
+            }
+
+        }
+    }
+//    cout << ((int) 7 ^ 15) << endl;
 
 //    int x = pow(2, 3);
 //    int shifter = 1;
