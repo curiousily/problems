@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1315894071 source:/home/vini/Dev/cpp/workspace/problems/usaco/chapter-2/section-2.2/runaround.numbers/main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<cmath>
+	<cstring>
+	<vector>
+	<string>
+	<bitset>
+	<algorithm>
+	<set>
+	<queue>
+	<climits>
+
