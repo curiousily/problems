@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1316197427 source:/home/vini/Dev/cpp/workspace/problems/usaco/chapter-2/section-2.2/subset.sums/main.cpp
+	<iostream>
+	<cstdio>
+	<cstdlib>
+	<cmath>
+	<cstring>
+	<vector>
+	<string>
+	<bitset>
+	<algorithm>
+	<set>
+	<queue>
+	<climits>
+
