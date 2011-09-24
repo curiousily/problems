@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1316892292 source:/home/vini/Dev/cpp/workspace/problems/usaco/chapter-2/section-2.2/party.lamps/main.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<cmath>
+	<cstring>
+	<vector>
+	<string>
+	<bitset>
+	<algorithm>
+	<set>
+	<queue>
+	<climits>
+
