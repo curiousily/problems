@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1325011457 source:/home/vini/Dev/cpp/workspace/problems/uva/11764 - Jumping Mario/main.cpp
+	<fcntl.h>
+	<iostream>
+	<string>
+	<vector>
+	<map>
+	<cstdio>
+	<ctype.h>
+	<algorithm>
+	<set>
+
