@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1325281744 source:/home/vini/Dev/cpp/workspace/problems/uva/11459 - Snakes and Ladders/main.cpp
+	<fcntl.h>
+	<iostream>
+	<string>
+	<vector>
+	<map>
+	<cstdio>
+	<ctype.h>
+	<algorithm>
+	<set>
+
