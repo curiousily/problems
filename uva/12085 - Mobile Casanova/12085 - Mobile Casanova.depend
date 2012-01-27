@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1327684668 source:/home/vini/Dev/cpp/workspace/problems/uva/12085 - Mobile Casanova/main.cpp
+	<fcntl.h>
+	<iostream>
+	<string>
+	<vector>
+	<map>
+	<cmath>
+	<cstdio>
+	<ctype.h>
+	<algorithm>
+	<set>
+
