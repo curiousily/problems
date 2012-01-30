@@ -11,7 +11,19 @@
 
 using namespace std;
 
-const int generatorValue = 34943;
+int steps(int distance) {
+	if (distance == 0) {
+		return 0;
+	}
+	int step = sqrt(distance);
+	if (step * step == distance)
+		step = step * 2 - 1;
+	else if (step * step + step < distance)
+		step = step * 2 + 1;
+	else
+		step = step * 2;
+	return step;
+}
 
 int main() {
 #ifndef ONLINE_JUDGE
@@ -24,8 +36,7 @@ int main() {
 	scanf("%d\n", &tc);
 	while (tc--) {
 		scanf("%ld %ld\n", &first, &last);
-		long diff = last - first;
-		printf("%ld\n", diff);
+		printf("%d\n", steps(last - first));
 	}
 	return 0;
 }

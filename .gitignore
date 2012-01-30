@@ -1,6 +1,7 @@
 bin/
 obj/
 .metadata/
+.settings/
 Debug/
 .cproject
 .project
