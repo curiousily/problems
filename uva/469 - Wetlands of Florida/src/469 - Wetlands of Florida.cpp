@@ -32,8 +32,8 @@ void DFS(int row, int col) {
 //	printf("visiting %d %d with value %c\n", row, col, graph[row][col]);
 	visited[row][col] = true;
 	areaSize++;
-	for (int i = 1; i <= rowCount; i++) {
-		for (int j = 1; j <= colCount; j++) {
+	for (int i = row - 1; i <= row + 1; i++) {
+		for (int j = col - 1; j <= col + 1; j++) {
 			// all valid sides to visit
 			if ((i == row - 1 && j == col) || (i == row + 1 && j == col)
 					|| (i == row && j == col - 1) || (i == row && j == col + 1)
@@ -80,12 +80,16 @@ int main() {
 		do {
 			int rowToFind, colToFind;
 			sscanf(str.c_str(), "%d %d\n", &rowToFind, &colToFind);
-			ResetData();
-			DFS(rowToFind, colToFind);
-			printf("%d\n", areaSize);
+			if (rowToFind > rowCount || colToFind > colToFind || graph[rowToFind][colToFind] != 'W') {
+				printf("0\n");
+			} else {
+				ResetData();
+				DFS(rowToFind, colToFind);
+				printf("%d\n", areaSize);
+			}
 //			printf("rowToFind = %d colToFind = %d\n", rowToFind, colToFind);
 		} while (getline(cin, str) && !str.empty());
-		if(tc > 0) {
+		if (tc > 0) {
 			printf("\n");
 		}
 	}
