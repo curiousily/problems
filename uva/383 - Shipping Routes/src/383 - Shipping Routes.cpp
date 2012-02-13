@@ -12,6 +12,9 @@
 
 using namespace std;
 
+#define Foreach(var, upperLimit) \
+	for(unsigned var = 0; var < upperLimit; var++)
+
 int DataSets;
 int WarehouseCount, LegCount, ShippingRequestCount;
 map<string, int> WarehouseToIntMap;
@@ -28,7 +31,8 @@ int FindDistanceBetween(int warehouse1, int warehouse2) {
 	while (!nodeQueue.empty()) {
 		long node = nodeQueue.front();
 		nodeQueue.pop();
-		for (unsigned i = 0; i < AdjList[node].size(); i++) {
+//		for (unsigned i = 0; i < AdjList[node].size(); i++) {
+		Foreach(i, AdjList[node].size()) {
 			int neighbour = AdjList[node][i];
 			// if it isn't already visited
 			if (!distance.count(neighbour)) {

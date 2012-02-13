@@ -1,0 +1,36 @@
+3 3
+Picadilly
+Victoria
+Queensway
+Picadilly Victoria 2
+Queensway Victoria 10
+Queensway Picadilly 20
+Picadilly
+4 2
+Picadilly
+Victoria
+Queensway
+Temple
+Picadilly Victoria 2
+Temple Queensway 100
+Temple
+3 3
+Picadilly
+Victoria
+Queensway
+Picadilly Victoria 2
+Queensway Victoria 10
+Queensway Picadilly 20
+Picadilly
+4 2
+Picadilly
+Victoria
+Queensway
+Temple
+Picadilly Victoria 2
+Temple Queensway 100
+Temple
+1 0
+Pic
+Pic
+0 0
