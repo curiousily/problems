@@ -41,9 +41,9 @@ FindMinimumPayment()
     InTree[i] = false;
   }
   unsigned minWeightFound, edgeStartNode, edgeEndNode;
-  unsigned edgesTraversed = 0, totalDistance = 0;
+  unsigned nodesTraversed = 0, totalDistance = 0;
   InTree[StartNode] = true;
-  while (edgesTraversed < S - 1)
+  while (nodesTraversed < S - 1)
   {
     minWeightFound = MAX_WEIGHT;
     FOREACH(i, S)
@@ -71,7 +71,7 @@ FindMinimumPayment()
     }
     totalDistance += AdjMatrix[edgeStartNode][edgeEndNode];
     InTree[edgeEndNode] = true;
-    edgesTraversed++;
+    nodesTraversed++;
   }
   return totalDistance;
 }
