@@ -56,26 +56,24 @@ FindElephants()
   {
     for (unsigned j = i + 1; j < length; j++)
     {
-      if (Elephants[j].weight > Elephants[i].weight)
+      if (Elephants[j].weight > Elephants[i].weight
+          && LengthTable[i] + 1 > LengthTable[j])
       {
-        if (LengthTable[i] + 1 > LengthTable[j])
-        {
-          LengthTable[j] = LengthTable[i] + 1;
-          ParentTable[j] = i;
-        }
+        LengthTable[j] = LengthTable[i] + 1;
+        ParentTable[j] = i;
       }
     }
   }
-  int max = 0;
+  int maxLength = 0;
   FOREACH(i, length)
   {
-    if (LengthTable[i] > max)
+    if (LengthTable[i] > maxLength)
     {
-      max = LengthTable[i];
+      maxLength = LengthTable[i];
       MaxIndex = i;
     }
   }
-  return max;
+  return maxLength;
 }
 
 bool
@@ -93,11 +91,11 @@ main()
 //          close (1); open ("out.txt", O_WRONLY | O_CREAT, 0600);
 #endif
   memset(ParentTable, -1, sizeof(ParentTable));
-  int w, iq, i = 0;
-  while (scanf("%d %d\n", &w, &iq) != EOF)
+  int weight, iq, i = 0;
+  while (scanf("%d %d\n", &weight, &iq) != EOF)
   {
     Elephant elephant;
-    elephant.weight = w;
+    elephant.weight = weight;
     elephant.iq = iq;
     elephant.index = i + 1;
     Elephants.push_back(elephant);
