@@ -35,7 +35,7 @@ struct Box
   }
 };
 
-vector<int> LengthTable;
+vector<int> HeightTable;
 vector<Box> Boxes;
 
 bool
@@ -47,10 +47,10 @@ SortByDecreasingArea(Box b1, Box b2)
 void
 Init()
 {
-  LengthTable.clear();
+  HeightTable.clear();
   FOREACH(i, Boxes.size())
   {
-    LengthTable.push_back(0);
+    HeightTable.push_back(0);
   }
   sort(Boxes.begin(), Boxes.end(), SortByDecreasingArea);
   //    FOREACH(boxIndex, Boxes.size())
@@ -59,22 +59,26 @@ Init()
   //    }
 }
 
+bool CanBuildOnTop(unsigned j, unsigned i)
+{
+    return Boxes[j].width > Boxes[i].width && Boxes[j].depth > Boxes[i].depth;
+}
+
 int
 FindMaximumHeight()
 {
   Init();
-  unsigned length = Boxes.size();
   int maxFound = 0;
-  for (unsigned i = 0; i < length; i++)
+  for (unsigned i = 0; i < Boxes.size(); i++)
   {
-    LengthTable[i] = Boxes[i].height;
+    HeightTable[i] = Boxes[i].height;
     for (unsigned j = 0; j < i; j++)
     {
-      if (Boxes[j].width > Boxes[i].width && Boxes[j].depth > Boxes[i].depth)
+      if (CanBuildOnTop(j, i))
       {
-        LengthTable[i] = max(LengthTable[i], LengthTable[j] + Boxes[i].height);
+        HeightTable[i] = max(HeightTable[i], HeightTable[j] + Boxes[i].height);
       }
-      maxFound = max(maxFound, LengthTable[i]);
+      maxFound = max(maxFound, HeightTable[i]);
     }
   }
   return maxFound;
