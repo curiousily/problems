@@ -78,8 +78,8 @@ FindMaximumHeight()
       {
         HeightTable[i] = max(HeightTable[i], HeightTable[j] + Boxes[i].height);
       }
-      maxFound = max(maxFound, HeightTable[i]);
     }
+    maxFound = max(maxFound, HeightTable[i]);
   }
   return maxFound;
 }
