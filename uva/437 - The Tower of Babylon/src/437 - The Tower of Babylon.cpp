@@ -59,9 +59,10 @@ Init()
   //    }
 }
 
-bool CanBuildOnTop(unsigned j, unsigned i)
+bool
+CanBuildOnTop(unsigned j, unsigned i)
 {
-    return Boxes[j].width > Boxes[i].width && Boxes[j].depth > Boxes[i].depth;
+  return Boxes[j].width > Boxes[i].width && Boxes[j].depth > Boxes[i].depth;
 }
 
 int
@@ -84,7 +85,6 @@ FindMaximumHeight()
   return maxFound;
 }
 
-int MaxIndex;
 int
 main()
 {
@@ -95,7 +95,7 @@ main()
 #endif
 
   int testCase = 1;
-  int n;
+  unsigned n;
   while (scanf("%d\n", &n) && n != 0)
   {
     Boxes.clear();
