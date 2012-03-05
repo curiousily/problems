@@ -35,7 +35,6 @@ bool
 OddTotalWeight()
 {
   return TotalWeight % 2 != 0;
-
 }
 
 bool
