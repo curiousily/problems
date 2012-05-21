@@ -29,13 +29,19 @@ using namespace std;
 
 #define NOT_COMPUTED -1
 
+int Parents[15][105];
 int Matrix[15][105];
+int Memo[15][105];
 
 int Rows, Columns;
 
 int FindMinimumWeight(int row, int column) {
   if(column > Columns) {
     return 0;
+  }
+
+  if(Memo[row][column] != NOT_COMPUTED) {
+    return Memo[row][column];
   }
 
   vector<int> ways;
@@ -53,7 +59,9 @@ int FindMinimumWeight(int row, int column) {
   int nextUp = Matrix[upRow][column] + FindMinimumWeight(upRow, nextColumn);
   ways.push_back(nextUp);
 
-  return *min_element(ways.begin(), ways.end());;
+  int minElement = *min_element(ways.begin(), ways.end());
+
+  return Memo[row][column] = minElement;
 }
 
 int
@@ -67,13 +75,25 @@ main()
   {
     FOREACH(i, Rows) {
       FOREACH(j, Columns) {
+        Parents[i + 1][j + 1] = NOT_COMPUTED;
+        Memo[i + 1][j + 1] = NOT_COMPUTED;
         Matrix[i + 1][j + 1] = READINT;
       }
     }
+    int pathStart = 0;
     int minWeight = INT_MAX;
     FOREACH(i, Rows) {
-       minWeight = min(minWeight, FindMinimumWeight(i + 1, 1));
+      int localMin = FindMinimumWeight(i + 1, 1);
+      if(localMin < minWeight) {
+        pathStart = i + 1;
+        minWeight = localMin;
+      }
     }
+    int row = pathStart;
+    FOREACH(column, Columns - 1) {
+      printf("%d ", Parents[row][column + 1]);
+    }
+    printf("%d\n", Parents[row][Columns]);
     printf("%d\n", minWeight);
   }
   return 0;
