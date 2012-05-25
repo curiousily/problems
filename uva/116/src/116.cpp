@@ -29,72 +29,77 @@ using namespace std;
 
 #define NOT_COMPUTED -1
 
-int Parents[15][105];
-int Matrix[15][105];
-int Memo[15][105];
+int Rows, Columns, Parents[15][102];
+void
+print(int row, int column)
+{
 
-int Rows, Columns;
-
-int FindMinimumWeight(int row, int column) {
-  if(column > Columns) {
-    return 0;
+  if (column != Columns - 1)
+  {
+    printf("%d ", row + 1);
+    print(Parents[row][column], column + 1);
   }
-
-  if(Memo[row][column] != NOT_COMPUTED) {
-    return Memo[row][column];
+  else
+  {
+    printf("%d\n", row + 1);
   }
-
-  vector<int> ways;
-
-  int nextColumn = column + 1;
-
-  int nextStraight = Matrix[row][column] + FindMinimumWeight(row, nextColumn);
-  ways.push_back(nextStraight);
-
-  int downRow = row + 1 > Rows ? 1 : row + 1;
-  int nextDown = Matrix[downRow][column] + FindMinimumWeight(downRow, nextColumn);
-  ways.push_back(nextDown);
-
-  int upRow = row - 1 > 0 ? row - 1 : Rows;
-  int nextUp = Matrix[upRow][column] + FindMinimumWeight(upRow, nextColumn);
-  ways.push_back(nextUp);
-
-  int minElement = *min_element(ways.begin(), ways.end());
-
-  return Memo[row][column] = minElement;
 }
-
 int
 main()
 {
 #ifndef ONLINE_JUDGE
-  close(0); open("in.txt", O_RDONLY);
+  close(0);
+  open("in.txt", O_RDONLY);
 //close (1); open ("out.txt", O_WRONLY | O_CREAT, 0600);
 #endif
-  while (scanf("%d %d\n", &Rows, &Columns) != EOF)
+  while (scanf("%d %d", &Rows, &Columns) != EOF)
   {
-    FOREACH(i, Rows) {
-      FOREACH(j, Columns) {
-        Parents[i + 1][j + 1] = NOT_COMPUTED;
-        Memo[i + 1][j + 1] = NOT_COMPUTED;
-        Matrix[i + 1][j + 1] = READINT;
+    int Matrix[Rows][Columns];
+    int Memo[Rows][Columns];
+
+    FOREACH(row, Rows)
+    {
+      FOREACH(column, Columns)
+      {
+        Matrix[row][column] = READINT;
+        Memo[row][column] = INT_MAX;
       }
     }
-    int pathStart = 0;
-    int minWeight = INT_MAX;
-    FOREACH(i, Rows) {
-      int localMin = FindMinimumWeight(i + 1, 1);
-      if(localMin < minWeight) {
-        pathStart = i + 1;
-        minWeight = localMin;
+
+    FOREACH(row, Rows)
+    {
+      Memo[row][Columns - 1] = Matrix[row][Columns - 1];
+    }
+
+    for (int column = Columns - 2; column >= 0; --column)
+    {
+      FOREACH(row, Rows)
+      {
+        for (int way = -1; way <= 1; ++way)
+        {
+          int currentWay = (row + way + Rows) % Rows;
+          int cellValue = Matrix[row][column];
+          if (Memo[row][column] >= cellValue + Memo[currentWay][column + 1])
+          {
+            if (Memo[row][column] > cellValue + Memo[currentWay][column + 1]
+                || Parents[row][column] == NOT_COMPUTED
+                || Parents[row][column] > currentWay)
+              Parents[row][column] = currentWay;
+            Memo[row][column] = cellValue + Memo[currentWay][column + 1];
+          }
+        }
       }
     }
-    int row = pathStart;
-    FOREACH(column, Columns - 1) {
-      printf("%d ", Parents[row][column + 1]);
+
+    int minWeight = 0;
+    FOREACH(row, Rows)
+    {
+      if (Memo[minWeight][0] > Memo[row][0])
+        minWeight = row;
     }
-    printf("%d\n", Parents[row][Columns]);
-    printf("%d\n", minWeight);
+    print(minWeight, 0);
+    printf("%d\n", Memo[minWeight][0]);
   }
   return 0;
 }
+
