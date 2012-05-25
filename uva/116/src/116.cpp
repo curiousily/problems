@@ -29,7 +29,7 @@ using namespace std;
 
 #define NOT_COMPUTED -1
 
-int Rows, Columns, Parents[15][102];
+int Rows, Columns, Paths[15][102];
 void
 print(int row, int column)
 {
@@ -37,7 +37,7 @@ print(int row, int column)
   if (column != Columns - 1)
   {
     printf("%d ", row + 1);
-    print(Parents[row][column], column + 1);
+    print(Paths[row][column], column + 1);
   }
   else
   {
@@ -82,9 +82,9 @@ main()
           if (Memo[row][column] >= cellValue + Memo[currentWay][column + 1])
           {
             if (Memo[row][column] > cellValue + Memo[currentWay][column + 1]
-                || Parents[row][column] == NOT_COMPUTED
-                || Parents[row][column] > currentWay)
-              Parents[row][column] = currentWay;
+                || Paths[row][column] == NOT_COMPUTED
+                || Paths[row][column] > currentWay)
+              Paths[row][column] = currentWay;
             Memo[row][column] = cellValue + Memo[currentWay][column + 1];
           }
         }
