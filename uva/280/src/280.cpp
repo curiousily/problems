@@ -29,7 +29,7 @@ using namespace std;
 
 #define MAX_N 101
 
-unsigned N;
+int N;
 
 vector<unsigned> Graph[MAX_N];
 vector<unsigned> queryList;
