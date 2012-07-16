@@ -27,12 +27,45 @@ using namespace std;
 #define READSTRING ({string strLine; cin >> strLine; strLine;});
 #define READLINE ({string strLine; getline(cin, strLine); strLine;});
 
-#define MAX_N 101
+#define MAX_N 105
 
 int N;
 
-vector<unsigned> Graph[MAX_N];
-vector<unsigned> queryList;
+vector<int> Graph[MAX_N];
+
+bool Visited[MAX_N];
+
+void DFS(int startNode, bool isStarting = false) {
+  if(!isStarting) {
+    Visited[startNode] = true;
+  }
+  vector<int> neighbours = Graph[startNode];
+  FOREACH(i, neighbours.size()) {
+    int neighbour = neighbours[i];
+    if(!Visited[neighbour]) {
+      DFS(neighbour);
+    }
+  }
+}
+
+void PrintInaccessableFrom(int queryNum) {
+  FOREACH(i, N + 1) {
+    Visited[i] = false;
+  }
+  Visited[0] = true;
+  DFS(queryNum, true);
+  vector<int> inaccessible;
+  FOREACH(i, N + 1) {
+    if(!Visited[i]) {
+      inaccessible.push_back(i);
+    }
+  }
+  printf("%d", inaccessible.size());
+  FOREACH(i, inaccessible.size()) {
+    printf(" %d", inaccessible[i]);
+  }
+  printf("\n");
+}
 
 int
 main()
@@ -49,13 +82,13 @@ main()
     {
       break;
     }
-    FOREACH(i, N)
+    FOREACH(i, MAX_N)
     {
       Graph[i].clear();
     }
-    FOR(N)
-    {
+    while(true) {
       int source = READINT;
+      if(source == 0) { break;}
       int destination = READINT;
       while (destination != 0)
       {
@@ -63,12 +96,10 @@ main()
         destination = READINT;
       }
     }
-    READINT;
-    queryList.clear();
     int queryCount = READINT;
     FOREACH(i, queryCount) {
       int queryNum = READINT;
-      queryList.push_back(queryNum);
+      PrintInaccessableFrom(queryNum);
     }
   }
   return 0;
