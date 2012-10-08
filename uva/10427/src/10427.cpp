@@ -16,31 +16,43 @@
 using namespace std;
 
 #define FOR(upperLimit) \
-  for(int i = 0; i < upperLimit; i++)
+  for(unsigned i = 0; i < upperLimit; i++)
 
 #define FOREACH(var, upperLimit) \
-  for(int var = 0; var < upperLimit; var++)
+  for(unsigned var = 0; var < upperLimit; var++)
 
 #define READINT ({int num;scanf("%d",&num);num;});
-#define READUINT ({unsigned num;scanf("%u",&num);num;});
 #define READLONG ({long num;scanf("%ld",&num);num;});
 #define READSTRING ({string strLine; cin >> strLine; strLine;});
 #define READLINE ({string strLine; getline(cin, strLine); strLine;});
 
-int N;
-
-int
-main()
-{
+int main() {
 #ifndef ONLINE_JUDGE
-  close(0);
-  open("in.txt", O_RDONLY);
-//close (1); open ("out.txt", O_WRONLY | O_CREAT, 0600);
+	close(0);
+	open("in.txt", O_RDONLY);
+//          close (1); open ("out.txt", O_WRONLY | O_CREAT, 0600);
 #endif
 
-  while (scanf("%d\n", &N) != EOF)
-  {
-    printf("%d\n", N);
-  }
-  return 0;
+	long int i, number, result, digitNumber;
+	long int rangesStart[] = { 1, 10, 100, 1000, 10000, 100000, 1000000,
+			10000000 };
+	long int rangesEnd[] = { -1, 9, 189, 2889, 38889, 488889, 5888889, 68888889,
+			100000001 };
+	while (scanf("%ld", &digitNumber) == 1) {
+		for (i = 1; digitNumber > rangesEnd[i]; i++)
+			;
+		number = digitNumber - rangesEnd[i - 1];
+		result = number % i;
+		number = number / i;
+		if (result == 1) {
+			result = (number / rangesStart[i - 1]) % 10 + 1;
+		} else if (result != 0) {
+			result = (number / rangesStart[i - result]) % 10;
+		} else {
+			result = (number - 1) % 10;
+		}
+		printf("%ld\n", result);
+	}
+
+	return 0;
 }
