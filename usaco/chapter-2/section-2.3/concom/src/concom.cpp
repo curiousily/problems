@@ -41,7 +41,7 @@ int N;
 
 int MaxCompany = 0;
 
-void ApplyOwnage(int company1, int company2) {
+void ApplyOwnership(int company1, int company2) {
 
 	if (Controls[company1][company2]) {
 		return;
@@ -51,7 +51,7 @@ void ApplyOwnage(int company1, int company2) {
 	for (int k = 1; k <= MaxCompany; k++) {
 		Owns[company1][k] += Owns[company2][k];
 		if (Owns[company1][k] > OWNING_THRESHOLD_PERCENTAGE) {
-			ApplyOwnage(company1, k);
+			ApplyOwnership(company1, k);
 		}
 	}
 }
@@ -77,7 +77,7 @@ int main() {
 		for (int c2 = 1; c2 <= MaxCompany; c2++) {
 
 			if (Owns[c1][c2] > OWNING_THRESHOLD_PERCENTAGE) {
-				ApplyOwnage(c1, c2);
+				ApplyOwnership(c1, c2);
 			}
 
 		}
