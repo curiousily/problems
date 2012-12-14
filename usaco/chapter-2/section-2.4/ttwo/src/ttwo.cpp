@@ -155,8 +155,6 @@ int main() {
 //
 //		printf("\n\n\n");
 
-//		break;
-
 		if (cowPosition.row == johnPosition.row
 				&& cowPosition.column == johnPosition.column) {
 			break;
